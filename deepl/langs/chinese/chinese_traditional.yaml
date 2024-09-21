@@ -1,7 +1,7 @@
 language: Chinese (Traditional)
-code: ZH
-regionalVariant: zh-Hant
+code: zh
 keywords:
-  - chinese
-  - chinese-traditional
-  - zh-hant
+- chinese
+- chinese-traditional
+- zh-hant
+regionalVariant: zh-Hant

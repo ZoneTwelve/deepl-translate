@@ -1,7 +1,7 @@
 language: Chinese (Simplified)
-code: ZH
-regionalVariant: zh-Hans
+code: zh
 keywords:
-  - chinese
-  - chinese-simplified
-  - zh-hans
+- chinese
+- chinese-simplified
+- zh-hans
+regionalVariant: zh-Hans

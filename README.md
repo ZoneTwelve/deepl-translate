@@ -1,12 +1,12 @@
+# DeepL Translate
+
 [![PyPI version](https://badge.fury.io/py/deepl-translate.svg)](https://badge.fury.io/py/deepl-translate)
 [![Python Package](https://github.com/ptrstn/deepl-translate/actions/workflows/python-package.yml/badge.svg)](https://github.com/ptrstn/deepl-translate/actions/workflows/python-package.yml)
 [![codecov](https://codecov.io/gh/ptrstn/deepl-translate/branch/master/graph/badge.svg)](https://codecov.io/gh/ptrstn/deepl-translate)
 [![Downloads](https://pepy.tech/badge/deepl-translate)](https://pepy.tech/project/deepl-translate)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-# DeepL Translate
-
-An unofficial python package to translate text using [DeepL](https://www.deepl.com/).
+An unofficial Python package for translating text using [DeepL](https://www.deepl.com/), now with improved language management and legacy support.
 
 ## Installation
 
@@ -16,137 +16,90 @@ pip install deepl-translate
 
 ## Usage
 
-### Supported languages
+### Supported Languages
 
-Currently the following languages are supported:
+DeepL Translate supports a wide range of languages. You can use either the language abbreviation or the full name in English. For a complete list of supported languages, please refer to the [language configuration files](deepl/langs/).
 
-| Abbreviation | Language   | Writing in own language |
-|--------------|------------|-------------------------|
-| BG           | Bulgarian  | Български               |
-| ZH           | Chinese    | 中文                    |
-| CS           | Czech      | Česky                   |
-| DA           | Danish     | Dansk                   |
-| NL           | Dutch      | Nederlands              |
-| EN           | English    | English                 |
-| ET           | Estonian   | Eesti                   |
-| FI           | Finnish    | Suomi                   |
-| FR           | French     | Français                |
-| DE           | German     | Deutsch                 |
-| EL           | Greek      | Ελληνικά                |
-| HU           | Hungarian  | Magyar                  |
-| IT           | Italian    | Italiano                |
-| JA           | Japanese   | 日本語                  |
-| LV           | Latvian    | Latviešu                |
-| LT           | Lithuanian | Lietuvių                |
-| PL           | Polish     | Polski                  |
-| PT           | Portuguese | Português               |
-| RO           | Romanian   | Română                  |
-| RU           | Russian    | Русский                 |
-| SK           | Slovak     | Slovenčina              |
-| SL           | Slovenian  | Slovenščina             |
-| ES           | Spanish    | Español                 |
-| SV           | Swedish    | Svenska                 |
+### Command Line Tool
 
-You can either input the abbreviation or the language written in english. 
-
-### Command line tool
-
-#### Help
+#### Basic Usage
 
 ```bash
-deepl --help
+deepl <source_language> <target_language> [options] -t "Text to translate"
 ```
-
-```
-usage: deepl [-h] [--version] [--formal | --informal] [-t TEXT | -f FILE] source_language target_language
-
-Python client to translate texts using deepl.com
-
-positional arguments:
-  source_language       Source language of your text
-  target_language       Target language of your desired text
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --version             show program's version number and exit
-  --formal              Use formal tone in translation
-  --informal            Use informal tone in translation
-  -t TEXT, --text TEXT  Text to be translated
-  -f FILE, --file FILE  File to be translated
-```
-
-#### Example 1
-
-This will translate a Spanish (```ES```) text into Russian (```RU```):
+- Legacy language management support: Use the `--lang-legacy` flag for backward compatibility.
 
 ```bash
-deepl spanish russian -t "¡Buenos días!"
+deepl --lang-legacy <source_language> <target_language> [options] -t "Text to translate"
 ```
 
-```
-Доброе утро!
-```
+#### Examples
 
-#### Example 2
+1. Translate Spanish to Russian:
+   ```bash
+   deepl spanish russian -t "¡Buenos días!"
+   ```
 
-This will translate the file (```test.txt```) text from Italian (```IT```) into Portuguese (```PT```):
+2. Translate from a file (Italian to Portuguese):
+   ```bash
+   deepl IT PT --file test.txt
+   ```
 
-```bash
-deepl IT PT --file test.txt
-```
+3. Use formal tone (Spanish to Russian):
+   ```bash
+   deepl ES RU --text "¿Cómo te llamas?" --formal
+   ```
 
-#### Example 3
+4. Use informal tone (Japanese to German):
+   ```bash
+   deepl JP DE --text "お元気ですか？" --informal
+   ```
 
-This will translate a Spanish (```ES```) text into Russian (```RU```) in _formal_ tone:
+### Python Library
 
-```bash
-deepl ES RU --text "¿Cómo te llamas?" --formal
-```
-
-```
-Как Вас зовут?
-```
-
-Note: _informal_ would be "_Как **тебя** зовут?_"
-
-#### Example 4
-
-This will translate a Japanese (```JP```) text into German (```DE```) in _informal_ tone:
-
-```bash
-deepl JP DE --text "お元気ですか？" --informal
-```
-
-```
-Wie geht es dir?
-```
-
-Note: _formal_ would be "_Wie geht es **Ihnen**?_"
-
-### Python library
-
-#### Example 1
-
-This will translate a Chinese (```ZH```) text into Dutch (```NL```):
+#### Basic Usage
 
 ```python
 import deepl
-deepl.translate(source_language="ZH", target_language="NL", text="你好")
+
+translated_text = deepl.translate(source_language="ZH", target_language="NL", text="你好")
+print(translated_text)  # Output: 'Hallo'
 ```
 
-```
-'Hallo'
-```
-
-#### Example 2
-
-This will translate a ```danish``` text into ```german``` in informal tone:
+#### Advanced Usage
 
 ```python
 import deepl
-deepl.translate(source_language="danish", target_language="german", text="Ring til mig!", formality_tone="informal")
+
+# Using full language names and specifying formality
+translated_text = deepl.translate(
+    source_language="danish",
+    target_language="german",
+    text="Ring til mig!",
+    formality_tone="informal"
+)
+print(translated_text)  # Output: 'Ruf mich an!'
+
+# Using legacy language support
+translated_text = deepl.translate(
+    source_language="ZH",
+    target_language="EN",
+    text="你好",
+    lang_legacy=True
+)
+print(translated_text)  # Output: 'Hello'
 ```
 
-```
-'Ruf mich an!'
-```
+## New Features
+
+- **Improved Language Management**: More flexible and extensible language configuration system.
+- **Legacy Support**: Backward compatibility for older language codes and configurations.
+- **Enhanced Chinese Support**: Distinguish between Simplified and Traditional Chinese.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

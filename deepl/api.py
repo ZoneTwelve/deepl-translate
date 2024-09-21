@@ -51,9 +51,12 @@ def request_translation(source_language: Union[str, dict], target_language: Unio
 
 
 def translate(source_language: str, target_language: str, text: str, **kwargs: dict):
-    source_language = abbreviate_language(source_language, legacy=kwargs['lang_legacy'])
-    target_language = abbreviate_language(target_language, legacy=kwargs['lang_legacy'])
-    del kwargs['lang_legacy']
+    lang_legacy = False
+    if 'lang_legacy' in kwargs:
+        lang_legacy = kwargs['lang_legacy']
+        del kwargs['lang_legacy']
+    source_language = abbreviate_language(source_language, legacy=lang_legacy)
+    target_language = abbreviate_language(target_language, legacy=lang_legacy)
 
     response = request_translation(source_language, target_language, text, **kwargs)
     response.raise_for_status()

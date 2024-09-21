@@ -45,7 +45,6 @@ class LanguageManager:
             all_paths = []
 
         code_index = []
-
         lang_index = {}
         group_index = {}
 
@@ -134,3 +133,6 @@ def import_function(loader, node):
 
     function = getattr(module, function_name)
     return function
+
+
+# The language management is inspired by EleutherAI’s lm-evaluation-harness

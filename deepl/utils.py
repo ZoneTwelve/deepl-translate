@@ -22,11 +22,10 @@ def abbreviate_language(language, legacy: bool = False):
     language = language.lower()
     if legacy:
         abbreviations = create_abbreviations_dictionary_legacy()
-        return abbreviations.get(language.lower())
     else:
-        abbreviations = create_abbreviations_dictionary()
         # Temporary adjustment to align with the original format
-        return abbreviations[language.lower()]
+        abbreviations = create_abbreviations_dictionary()
+    return abbreviations.get(language)
 
 
 def read_file_lines(path):

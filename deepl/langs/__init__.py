@@ -31,7 +31,7 @@ class LanguageManager:
         # return list(self._group.keys())
     
     def __getitem__(self, key):
-        return self._language_index[key]
+        return self._language_index[key] if key in self._language_index else None
 
     def initialize(
         self,

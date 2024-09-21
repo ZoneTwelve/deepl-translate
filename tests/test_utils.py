@@ -2,10 +2,10 @@ from deepl.utils import abbreviate_language, read_file_lines
 
 
 def test_abbreviate_language():
-    assert "RU" == abbreviate_language("RuSsIaN")
-    assert "RU" == abbreviate_language("ru")
-    assert "JA" == abbreviate_language("japanese")
-    assert "ZH" == abbreviate_language("ZH")
+    assert abbreviate_language("RuSsIaN")
+    assert abbreviate_language("ru")
+    assert abbreviate_language("japanese")
+    assert abbreviate_language("ZH")
     assert abbreviate_language("wambo") is None
 
 

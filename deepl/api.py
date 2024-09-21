@@ -10,6 +10,8 @@ from deepl.generators import (
 from deepl.settings import API_URL
 from deepl.utils import abbreviate_language
 
+from typing import Optional, Union
+
 headers = {
     "accept": "*/*",
     "accept-language": "en-US;q=0.8,en;q=0.7",
@@ -39,7 +41,7 @@ def split_into_sentences(text, **kwargs):
     return sentences
 
 
-def request_translation(source_language, target_language, text, **kwargs):
+def request_translation(source_language: Union[str, dict], target_language: Union[str, dict], text, **kwargs):
     sentences = split_into_sentences(text, **kwargs)
     data = generate_translation_request_data(
         source_language, target_language, sentences, **kwargs
@@ -48,9 +50,10 @@ def request_translation(source_language, target_language, text, **kwargs):
     return response
 
 
-def translate(source_language, target_language, text, **kwargs):
-    source_language = abbreviate_language(source_language)
-    target_language = abbreviate_language(target_language)
+def translate(source_language: str, target_language: str, text: str, **kwargs: dict):
+    source_language = abbreviate_language(source_language, legacy=kwargs['lang_legacy'])
+    target_language = abbreviate_language(target_language, legacy=kwargs['lang_legacy'])
+    del kwargs['lang_legacy']
 
     response = request_translation(source_language, target_language, text, **kwargs)
     response.raise_for_status()

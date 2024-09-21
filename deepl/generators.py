@@ -1,6 +1,7 @@
 from deepl.hacks import generate_timestamp
 from deepl.settings import MAGIC_NUMBER, SUPPORTED_FORMALITY_TONES
 
+from typing import Union
 
 def generate_split_sentences_request_data(text, identifier=MAGIC_NUMBER, **kwargs):
     return {
@@ -30,35 +31,57 @@ def generate_jobs(sentences, beams=1):
     return jobs
 
 
-def generate_common_job_params(formality_tone):
+def generate_common_job_params(formality_tone, target_language: dict = {}):
+    """
+    "commonJobParams": {
+      "quality": "normal",
+      "regionalVariant": "zh-Hant",
+      "mode": "translate",
+      "browserType": 1,
+      "textType": "plaintext"
+    },
+    """
+    ret = {}
+    if 'config' in target_language and 'regionalVariant' in target_language['config']:
+        ret['regionalVariant'] = target_language['config']['regionalVariant']
     if not formality_tone:
-        return {}
+        return ret
     if formality_tone not in SUPPORTED_FORMALITY_TONES:
         raise ValueError(f"Formality tone '{formality_tone}' not supported.")
     return {"formality": formality_tone}
 
 
 def generate_translation_request_data(
-    source_language,
-    target_language,
+    source_language: Union[str, dict],
+    target_language: Union[str, dict],
     sentences,
     identifier=MAGIC_NUMBER,
     alternatives=1,
     formality_tone=None,
 ):
-    return {
+    if isinstance(source_language, dict):
+        source_language_code = source_language['config']['code']
+    else:
+        source_language_code = source_language
+    if isinstance(target_language, dict):
+        target_language_code = target_language['config']['code']
+    else:
+        target_language_code = target_language
+    ret = {
         "jsonrpc": "2.0",
         "method": "LMT_handle_jobs",
         "params": {
             "jobs": generate_jobs(sentences, beams=alternatives),
             "lang": {
-                "user_preferred_langs": [target_language, source_language],
-                "source_lang_computed": source_language,
-                "target_lang": target_language,
+                "user_preferred_langs": [target_language_code, source_language_code],
+                "source_lang_computed": source_language_code,
+                "target_lang": target_language_code,
             },
             "priority": 1,
-            "commonJobParams": generate_common_job_params(formality_tone),
+            "commonJobParams": generate_common_job_params(formality_tone, target_language),
             "timestamp": generate_timestamp(sentences),
         },
         "id": identifier,
     }
+    # print(ret)
+    return ret

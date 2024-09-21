@@ -31,7 +31,7 @@ def generate_jobs(sentences, beams=1):
     return jobs
 
 
-def generate_common_job_params(formality_tone, target_language: dict = {}):
+def generate_common_job_params(formality_tone, target_language: Union[dict, str] = {}):
     """
     "commonJobParams": {
       "quality": "normal",
@@ -42,14 +42,20 @@ def generate_common_job_params(formality_tone, target_language: dict = {}):
     },
     """
     ret = {}
-    if 'config' in target_language and 'regionalVariant' in target_language['config']:
-        ret['regionalVariant'] = target_language['config']['regionalVariant']
-    if not formality_tone:
-        return ret
-    if formality_tone not in SUPPORTED_FORMALITY_TONES:
-        raise ValueError(f"Formality tone '{formality_tone}' not supported.")
-    return {"formality": formality_tone}
 
+    # Extract regional variant if available
+    if isinstance(target_language, dict) and 'config' in target_language:
+        ret['regionalVariant'] = target_language['config'].get('regionalVariant')
+
+    # Handle formality tone
+    if formality_tone is not None:
+        if formality_tone in SUPPORTED_FORMALITY_TONES:
+            ret['formality'] = formality_tone
+        else:
+            raise ValueError(f"Formality tone '{formality_tone}' not supported. "
+                             f"Supported tones are: {', '.join(SUPPORTED_FORMALITY_TONES)}")
+
+    return ret
 
 def generate_translation_request_data(
     source_language: Union[str, dict],

@@ -1,9 +1,9 @@
 import argparse
+import sys
 
 import deepl
 from deepl import __version__
-from deepl.utils import read_file_lines
-
+from deepl.utils import read_file_lines, supported_languages
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
@@ -19,8 +19,8 @@ def parse_arguments():
         help="Show supported languages",
     )
 
-    parser.add_argument("source_language", help="Source language of your text")
-    parser.add_argument("target_language", help="Target language of your desired text")
+    parser.add_argument("source_language", nargs="?", help="Source language of your text")
+    parser.add_argument("target_language", nargs="?", help="Target language of your desired text")
 
     parser.add_argument('--lang-legacy', action='store_true', help='Enable legacy language support')
 
@@ -38,20 +38,27 @@ def parse_arguments():
 
     return parser.parse_args()
 
-
 def main():
     args = parse_arguments()
+    
     if args.show_language:
-        from deepl.utils import supported_languages
         supported_languages.show_languages()
-        exit(0)
+        sys.exit(0)
+    
+    if not args.source_language or not args.target_language:
+        print("Error: Both source and target languages are required unless using --show-language")
+        sys.exit(1)
+    
     source_language = args.source_language
     target_language = args.target_language
 
     if args.file:
         text = read_file_lines(args.file)
-    else:
+    elif args.text:
         text = args.text
+    else:
+        print("Error: Either --text or --file must be provided")
+        sys.exit(1)
 
     kwargs = {
         'lang_legacy': args.lang_legacy
@@ -65,7 +72,6 @@ def main():
         print(deepl.translate(source_language, target_language, text, **kwargs))
     except AssertionError as e:
         print(f"Error: {e}")
-
 
 if __name__ == "__main__":
     main()

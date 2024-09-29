@@ -58,6 +58,11 @@ def translate(source_language: str, target_language: str, text: str, **kwargs: d
     source_language = abbreviate_language(source_language, legacy=lang_legacy)
     target_language = abbreviate_language(target_language, legacy=lang_legacy)
 
+    if source_language == target_language:
+        return text
+    if source_language is None or target_language is None:
+        raise ValueError("Both source and target languages must be provided")
+
     response = request_translation(source_language, target_language, text, **kwargs)
     response.raise_for_status()
 

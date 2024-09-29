@@ -4,8 +4,8 @@ MAGIC_NUMBER = int("CAFEBABE", 16)
 
 SUPPORTED_LANGUAGES = [
     {"code": "BG", "language": "Bulgarian"},
-    {"code": "ZH", "language": "Chinese", "name": "Chinese (Simplified)", "keywords": ["chinese", "chinese-simplified", "zh-hans"], "regionalVariant": 'zh-Hans'},
-    {"code": "ZH", "language": "Chinese", "name": "Chinese (Traditional)", "keywords": ["chinese", "chinese-traditional", "zh-hant"], "regionalVariant": "zh-Hant"},
+    {"code": "ZH", "language": "Chinese", "name": "Chinese (Simplified)", "keywords": ["chinese", "chinese-simplified", "zh-hans", "china"], "regionalVariant": 'zh-Hans'},
+    {"code": "ZH", "language": "Chinese", "name": "Chinese (Traditional)", "keywords": ["chinese", "chinese-traditional", "zh-hant", "taiwan"], "regionalVariant": "zh-Hant"},
     {"code": "CS", "language": "Czech"},
     {"code": "DA", "language": "Danish"},
     {"code": "NL", "language": "Dutch"},

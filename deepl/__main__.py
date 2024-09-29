@@ -19,17 +19,9 @@ def parse_arguments():
         help="Show supported languages",
     )
 
-    # Changing source_language and target_language to optional arguments
-    parser.add_argument(
-        "--source-language",
-        help="Source language of your text",
-        default="EN",
-    )
-    parser.add_argument(
-        "--target-language",
-        help="Target language of your desired text",
-        default="EN",
-    )
+    parser.add_argument("source_language", help="Source language of your text")
+    parser.add_argument("target_language", help="Target language of your desired text")
+
     parser.add_argument('--lang-legacy', action='store_true', help='Enable legacy language support')
 
     formality_group = parser.add_mutually_exclusive_group()

@@ -13,9 +13,23 @@ def parse_arguments():
     parser.add_argument(
         "--version", action="version", version="%(prog)s {}".format(__version__)
     )
+    parser.add_argument(
+        "--show-language",
+        action="store_true",
+        help="Show supported languages",
+    )
 
-    parser.add_argument("source_language", help="Source language of your text")
-    parser.add_argument("target_language", help="Target language of your desired text")
+    # Changing source_language and target_language to optional arguments
+    parser.add_argument(
+        "--source-language",
+        help="Source language of your text",
+        default="EN",
+    )
+    parser.add_argument(
+        "--target-language",
+        help="Target language of your desired text",
+        default="EN",
+    )
     parser.add_argument('--lang-legacy', action='store_true', help='Enable legacy language support')
 
     formality_group = parser.add_mutually_exclusive_group()
@@ -30,13 +44,15 @@ def parse_arguments():
     input_group.add_argument("-t", "--text", help="Text to be translated")
     input_group.add_argument("-f", "--file", help="File to be translated")
 
-    
-
     return parser.parse_args()
 
 
 def main():
     args = parse_arguments()
+    if args.show_language:
+        from deepl.utils import supported_languages
+        supported_languages.show_languages()
+        exit(0)
     source_language = args.source_language
     target_language = args.target_language
 

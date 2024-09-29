@@ -29,7 +29,22 @@ class LanguageManager:
     def languages(self): # slow
         return self._language_index
         # return list(self._group.keys())
-    
+
+    def show_languages(self):
+        languages_dict = {}
+        for code, info in self._language_index.items():
+            language_name = info['config']['name'] if 'name' in info['config'] else info['config']['language']
+            if language_name not in languages_dict:
+                languages_dict[language_name] = set()
+            languages_dict[language_name].add(code)
+            languages_dict[language_name].update(info['config'].get('keywords', []))
+
+        for language, keywords in languages_dict.items():
+            print(f"{language}:")
+            for keyword in sorted(keywords):
+                print(f"* {keyword}")
+            print()  # Add a blank line between languages
+
     def __getitem__(self, key):
         return self._language_index[key] if key in self._language_index else None
 

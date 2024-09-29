@@ -1,8 +1,7 @@
 import codecs
 import os
 import re
-
-from setuptools import setup
+from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -26,19 +25,20 @@ with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
 setup(
     name="deepl-translate",
     version=find_version("deepl", "__init__.py"),
-    desription="Python package to translate text using deepl.com",
+    description="Python package to translate text using deepl.com",  # fixed typo here
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="http://github.com/ptrstn/deepl-translate",
     author="Peter Stein",
     license="MIT",
     python_requires='>3.6',
-    packages=["deepl"],
+    packages=find_packages(),  # ensure all packages (including sub-packages) are found
     install_requires=["requests", "pyyaml"],
     entry_points={"console_scripts": ["deepl=deepl.__main__:main"]},
     classifiers=["License :: OSI Approved :: MIT License"],
+    include_package_data=True,  # ensures package data like langs/* will be included
     package_data={
-        # Include all files under deepl/langs
-        "deepl": ["langs/*"]
+        "deepl": ["langs/**/*"]  # include all files in langs and its subdirectories
     },
 )
+

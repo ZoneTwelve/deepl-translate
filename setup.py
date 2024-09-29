@@ -34,7 +34,11 @@ setup(
     license="MIT",
     python_requires='>3.6',
     packages=["deepl"],
-    install_requires=["requests"],
+    install_requires=["requests", "pyyaml"],
     entry_points={"console_scripts": ["deepl=deepl.__main__:main"]},
     classifiers=["License :: OSI Approved :: MIT License"],
+    package_data={
+        # Include all files under deepl/langs
+        "deepl": ["langs/*"]
+    },
 )
